@@ -90,3 +90,38 @@ def get_pelicula(id):
         pelicula['review'] = row[8]
         pelicula['compartido'] = row[9]
     return pelicula
+def modificar_pelicula(id, columna, valor):
+    update = f"UPDATE pelicula set {columna} = %s WHERE id = %s"
+    cursor.execute(update, (valor, id))
+    bd.commit()
+    if cursor.rowcount:
+        return True
+    else:
+        return False
+def eliminar_pelicula(id):
+    eliminar = "DELETE from pelicula WHERE id = %s"
+    cursor.execute(eliminar,(id,))
+    bd.commit()
+    if cursor.rowcount:
+        return True
+    else:
+        return False
+def get_peliculas_usuario(id):
+    query = "SELECT * FROM pelicula WHERE usuarioId = %s"
+    cursor.execute(query, (id,))
+    peliculas = []
+    for row in cursor.fetchall():
+        pelicula = {
+        'id': row[0],
+        'titulo': row[1],
+        'fecha_visto': row[2],
+        'imagen' : row[3],
+        'director' : row[4],
+        'date' : row[5],
+        'valoracion' : row[6],
+        'favorito' : row[7],
+        'review' : row[8],
+        'compartido' : row[9]
+        }
+        peliculas.append(pelicula)
+    return peliculas
